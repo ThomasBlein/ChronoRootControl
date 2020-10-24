@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ config.SITE_NAME }}
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+  <h1 class="mt-5">{{ title }}</h1>
+  {% if subtitle %}
+  <p class="lead">
+  {{ subtitle }}
+  </p>
+  {% endif %}
+  {{ content }}
+{% endblock %}
+{% block footer %}
+{% endblock %}

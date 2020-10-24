@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ config.SITE_NAME }}
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+      <h1 class="mt-5">{{ config.SITE_NAME }}</h1>
+      <p class="lead">{{ config.SITE_DESC }} </p>
+      <h2 class="sub-header">Experiments</h2>
+
+      <a href="{{url_for('api_exp.get_experiment_list') }}">As json <i class="fas fa-cog"></i></a>
+      <div class="table-responsive">
+          <table class="table tablesorter table-hover" id="experiment_list">
+              <thead>
+                  <tr>
+                      <th>Experiment id</th>
+                      <th>Status</th>
+                      <th>Message</th>
+                      <th>Start date</th>
+                      <th>Stop date</th>
+                      <th>Interval</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for exp in exps.exps %}
+                  {% if exp.status == "Done" %}
+                  <tr class="success clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  {% elif exp.status == "Canceled" %}
+                  <tr class="warning clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  {% elif exp.status == "Error" %}
+                  <tr class="danger clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  {% elif exp.status == "Running" %}
+                  <tr class="info clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  {% else %}
+                  <tr class="clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  {% endif %}
+                      <th scope="row">{{exp.expid}}</th>
+                      <td>{{exp.status}}</td>
+                      <td>{{exp.massage}}</td>
+                      <td>{{exp.start.format('YYYY/MM/DD HH:mm')}}</td>
+                      <td>{{exp.end.format('YYYY/MM/DD HH:mm')}}</td>
+                      <td>{{exp.interval}} min</td>
+                      <td>
+                          <a href="{{url_for('api_exp.get_experiment', expid=exp.expid) }}">As json <i class="fas fa-cog"></i></span>
+                          </a>
+                      </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+          </table>
+        </div>
+        <div>
+            <a role="button" class="btn btn-primary" aria-label="New experiment" href="{{url_for('experiment_page.new_experiment')}}">New experiment <i class="fas fa-plus-circle"></i></a>
+        </div>
+{% endblock %}
+{% block footer %}
+    <script>
+$(function(){
+    $("#experiment_list").tablesorter({ sortList: [[2,0]] });
+});
+
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});
+    </script>
+{% endblock %}

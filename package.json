@@ -1,0 +1,29 @@
+{
+  "name": "ChronoRootrobot",
+  "version": "1.3.0",
+  "description": "A web interface to control a module of the ChronoRoot robot build",
+  "main": "src/main.js",
+  "repository": "git@laforge.ips2.u-psud.fr:thomas.blein/ChronoRootrobot.git",
+  "scripts": {
+    "start": "yarn run build",
+    "build": "parcel build app/static/src/main.js -d app/static/dist --public-url .",
+    "watch": "parcel watch app/static/src/main.js -d app/static/dist --public-url ."
+  },
+  "author": "Thomas Blein <thomas.blein@ips2.universite-paris-saclay.fr>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
+    "popper.js": "^1.16.0",
+    "tablesorter": "^2.31.2",
+    "tempusdominus-bootstrap-4": "^5.1.2",
+    "tempusdominus-core": "^5.0.3"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.24.0"
+  }
+}

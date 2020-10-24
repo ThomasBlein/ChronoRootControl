@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ config.SITE_NAME }}
+{% endblock %}
+
+{% block content %}
+
+<h1 class="mt-5">Device configuration</h1>
+<div class="row mt-5">
+    <div class="col">
+        <h2>Date and time settings</h3>
+
+        <p>Curent system date on this module : <strong>{{ date }}</strong></p>
+        <form action="" method="post" name="login" class="form-inline">
+            {{ app_setting_form.hidden_tag() }}
+            {% if app_setting_form.systemDate.errors %}
+            <div class="form-group has-error mb-2 mr-sm-2">
+            {% else %}
+            <div class="form-group mb-2 mr-sm-2">
+            {% endif %}
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                {{ app_setting_form.systemDate(class="form-control")}}
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="far fa-calendar"></i></div>
+                </div>
+            </div>
+            {% for error in app_setting_form.systemDate.errors %}
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    {{error}}
+            </div>
+            {% endfor %}
+            </div>
+
+            <button type="submit" name="action" value="set" class="btn btn-info mb-2" aria-label="Set">
+                Set
+            </button>
+        </form>
+    </div>
+    <div class="col">
+
+        <h2>Camera Focus setting</h3>
+
+         <ul class="fa-ul">
+            {% for camera_id in config.CAMS %}
+            <li>
+                <a href="{{ url_for('focus_page.index', cam_id=camera_id) }} ">
+                <span class="fa-li"><i class="fas fa-camera"></i></span>
+                    Cam {{ camera_id }}
+                </a>
+            </li>
+          {% endfor %}
+        </ul>
+    </div>
+    <div class="w-100"></div>
+    <div class="col">
+    </div>
+    <div class="col">
+        {% include 'components/backlight.html' %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript">
+    $(function () {
+        $.fn.datetimepicker.Constructor.Default = $.extend({}, $.fn.datetimepicker.Constructor.Default, {
+                        icons: {
+                                            time: 'far fa-clock',
+                                            date: 'far fa-calendar',
+                                            up: 'fas fa-arrow-up',
+                                            down: 'fas fa-arrow-down',
+                                            previous: 'fas fa-chevron-left',
+                                            next: 'fas fa-chevron-right',
+                                            today: 'fas fa-calendar-check',
+                                            clear: 'fas fa-trash',
+                                            close: 'fas fa-times'
+                                        } });
+
+
+        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss ZZ'});
+    });
+</script>
+{% endblock %}

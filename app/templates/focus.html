@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ config.SITE_NAME }}
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Camera {{ cam_id }} preview</h1>
+
+<div class="row mt-5">
+    <div class="col">
+        <img src="{{ url_for('focus_page.video_feed', cam_id=cam_id) }}"/>
+    </div>
+    <div class="col col-lg-3">
+        {% include 'components/backlight.html' %}
+    </div>
+</div>
+
+{% endblock %}

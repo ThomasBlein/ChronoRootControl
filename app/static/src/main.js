@@ -1,0 +1,9 @@
+import './jquery-global.js'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import 'tablesorter'
+import './moment-global.js'
+import 'tempusdominus-bootstrap-4'
+import 'tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css';
+import './main.scss'

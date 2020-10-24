@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ config.SITE_NAME }}
+{% endblock %}
+
+{% block content %}
+    {% if exp.expid == "" %}
+    <h1 class="mt-5">New experiment</h1>
+    {% else %}
+    <h1 class="mt-5"> {{ exp.expid }} </h1>
+<div class="container">
+    <a href="{{url_for('api_exp.get_experiment', expid=exp.expid) }}">As json <i class="fas fa-cog"></i></a>
+    {% endif %}
+</div>
+
+{% if exp.status == "Done" %}
+<div class="alert alert-success" role="alert">
+    <strong>{{exp.status}}!</strong> {{exp.message}}
+</div>
+{% elif exp.status == "Canceled" %}
+<div class="alert alert-warning" role="alert">
+    <strong>{{exp.status}}!</strong> {{exp.message}}
+</div>
+{% elif exp.status == "Error" %}
+<div class="alert alert-danger" role="alert">
+    <strong>{{exp.status}}!</strong> {{exp.message}}
+</div>
+{% elif exp.status == "Running" %}
+<div class="alert alert-info" role="alert">
+    <strong>{{exp.status}}!</strong> {{exp.message}}
+</div>
+{% endif %}
+
+
+<div class="alert alert-success" role="alert">
+    <h3>Summary</h3>
+    Current status :    <strong>{{exp.status}}</strong> {{exp.message}}<br/>
+    Next image will be taken at  {{ exp.next_run_time }} <br/>
+</div>
+
+
+
+
+<form action="" method="post" name="settings">
+    <h2 class="sub-header">Experiment control</h2>
+    {{ form.hidden_tag() }}
+    {% if actions in ["readonly", "cancelable"] %}
+        <fieldset disabled="">
+    {% endif %}
+
+    <div class="form-group">
+        <label for="description">Description:</label>
+        {{ form.desc(class="form-control")}}
+    </div>
+
+    <h3>Time control</h3>
+    <div class="row">
+        <div class='col-md-5'>
+            {% if form.start.errors %}
+                <div class="form-group has-error">
+            {% else %}
+                <div class="form-group">
+            {% endif %}
+                <label for="datetimepicker1">Start:</label>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                    {{ form.start(class="form-control")}}
+                {# <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/> #}
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="far fa-calendar"></i></div>
+                    </div>
+                </div>
+                {% for error in form.start.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        {{error}}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if form.end.errors %}
+                <div class="form-group has-error">
+            {% else %}
+                <div class="form-group">
+            {% endif %}
+                <label for="datetimepicker2">End:</label>
+                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                    {{ form.end(class="form-control")}}
+                {# <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"/> #}
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="far fa-calendar"></i></div>
+                    </div>
+                </div>
+                {% for error in form.end.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        {{error}}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class='col-md-5'>
+            {% if form.interval.errors %}
+                <div class="form-group has-error">
+            {% else %}
+                <div class="form-group">
+            {% endif %}
+                <label for="time-point-number">{{ form.interval.description }}</label>
+                {{ form.interval(class="form-control", type="number")}}
+                {% for error in form.interval.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        {{error}}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <h3>Camera control</h3>
+    <div class="row">
+        <div class='col-md-5'>
+            {% if form.cameras.errors %}
+                <div class="form-group has-error">
+            {% else %}
+                <div class="form-group">
+            {% endif %}
+            <label for="cameras">{{ form.cameras.description }}:</label>
+            {{ form.cameras(class="form-control") }}
+            {% for error in form.cameras.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    {{error}}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+
+        <div class='col-md-5'>
+            {% if form.ir.errors %}
+                <div class="form-group has-error">
+            {% else %}
+                <div class="form-group">
+            {% endif %}
+            <label for="ir">Imaging condition:</label>
+            <div class="checkbox">
+                <label>
+                    {{ form.ir() }}IR backlight
+                </label>
+            </div>
+            {% for error in form.ir.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    {{error}}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if actions == "readonly" %}
+    </fieldset>
+    {% elif actions == "cancelable" %}
+    </fieldset>
+    <button type="submit" name="action" value="cancel" class="btn btn-lg btn-warning" aria-label="Cancel">
+        Cancel <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+    </button>
+    {% elif actions == "editable" %}
+    <button type="submit" name="action" value="edit" class="btn btn-lg btn-primary" aria-label="Edit">
+        Edit <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+    </button>
+    <button type="submit" name="action" value="cancel" class="btn btn-lg btn-warning" aria-label="Cancel">
+        Cancel <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+    </button>
+    {% endif %}
+    {% if actions == "new" %}
+    <button type="submit" name="action" value="new" class="btn btn-lg btn-primary" aria-label="Create">
+        Create <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+    </button>
+    {% else %}
+    <button type="submit" name="action" value="delete" class="btn btn-lg btn-danger" aria-label="Delete">
+        Delete <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </button>
+    {% endif %}
+</form>
+
+{% if exp.logs %}
+<h2 class="sub-header">Experiment actions</h2>
+<div class="table-responsive">
+<table class="table">
+<thead>
+<tr>
+<th></th>
+<th>Status</th>
+<th>Date</th>
+<th>Camera</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+    {% for logentry in exp.logs %}
+    {% if logentry.status == "Done" %}
+        <tr class="success">
+    {% elif logentry.status == "Canceled" %}
+        <tr class="warning">
+    {% elif logentry.status == "Error" %}
+    <tr class="danger">
+    {% else %}
+    <tr>
+    {% endif %}
+        <th scope="row">{{logentry.id}}</th>
+    <td>{{logentry.status}}</td>
+    <td>{{logentry.date}}</td>
+    <td>
+        {% for camera in logentry.cameras %}
+        <span class="label label-default">
+            <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+            {{camera}}
+        </span>
+        {% endfor %}
+    </td>
+    <td>{{logentry.info}}
+        {% for file in logentry.files %}
+            <a href="#">
+                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                {{file}}
+            </a>
+        {% endfor %}
+    </td>
+    </tr>
+    {%endfor %}
+</tbody>
+</table>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block footer %}
+{% if actions not in ["readonly", "cancelable"] %}
+<script type="text/javascript">
+    $(function () {
+        $.fn.datetimepicker.Constructor.Default = $.extend({}, $.fn.datetimepicker.Constructor.Default, {
+                        icons: {
+                                            time: 'far fa-clock',
+                                            date: 'far fa-calendar',
+                                            up: 'fas fa-arrow-up',
+                                            down: 'fas fa-arrow-down',
+                                            previous: 'fas fa-chevron-left',
+                                            next: 'fas fa-chevron-right',
+                                            today: 'fas fa-calendar-check',
+                                            clear: 'fas fa-trash',
+                                            close: 'fas fa-times'
+                                        } });
+
+
+        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss ZZ'});
+        $('#datetimepicker2').datetimepicker({
+            useCurrent: false,
+            format: 'YYYY-MM-DD HH:mm:ss ZZ'
+        });
+        $("#datetimepicker1").on("change.datetimepicker", function (e) {
+            $('#datetimepicker2').datetimepicker('minDate', e.date);
+        });
+        $("#datetimepicker2").on("change.datetimepicker", function (e) {
+            $('#datetimepicker1').datetimepicker('maxDate', e.date);
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}
