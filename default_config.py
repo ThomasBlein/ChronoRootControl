@@ -14,7 +14,7 @@ class Config(object):
     SITE_NAME = "ChronoRoot Module Controler"
     SITE_DESC = "A web interface to control a module of the ChronoRoot robot"
 
-    WORKING_DIR = "/media/usb0"
+    WORKING_DIR = "/srv/ChronoRootData"
 
     IVPORT_MODULE_PATH = "/root/ivport-v2"
     SELECTOR_PRESENT = True # IVPORT MODULE PRESENCE
@@ -49,7 +49,8 @@ class Config(object):
                         # Three cams : (1,2,3),(1,2,4),(2,3,4)
                         # Four cams : (1,2,3,4)
                         # the order inside the list is not important
-    CAM_WARMUP = 1
+    CAM_WARMUP = 2
+    CAM_ADJUST_TIME = 10
 
     CAM_RETRIES = 10
     CAM_WAIT_AFTER_RETRAY = 10
@@ -57,7 +58,7 @@ class Config(object):
     MAX_WAIT = 100 # time to wait to another experience to terminate, min 5
     STREAM_RESOLUTION = (1640, 1232)
     IR_GPIO = 32
-    IR_WARM_UP = 5
+    IR_WARM_UP = 10
 
     CAM_PARAMS = {
         "format" : 'png',
