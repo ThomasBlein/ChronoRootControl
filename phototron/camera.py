@@ -136,7 +136,7 @@ class RaspiCamera(Camera):
                     camera.color_effects = (128,128)
                     # Wait for autobalance
                     camera.start_preview()
-                    time.sleep(5)
+                    time.sleep(Config.CAM_ADJUST_TIME)
 
                     camera.capture(image_path, 'png')
                 return True

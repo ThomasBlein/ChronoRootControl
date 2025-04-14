@@ -46,6 +46,7 @@ class Light:
             if GPIO.gpio_function(self.IR_GPIO) != GPIO.OUT:
                 GPIO.setup(self.IR_GPIO , GPIO.OUT)
             GPIO.output(self.IR_GPIO, new_state)
-            if Config.CAM_WARMUP != 0 :
-                time.sleep(Config.CAM_WARMUP)
+            #logger.info('IR swiched ON')
+            if Config.IR_WARM_UP != 0 :
+                time.sleep(Config.IR_WARM_UP)
             return True
