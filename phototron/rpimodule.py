@@ -143,7 +143,7 @@ class RpiModule(object):
                     if len(step) > 0:
                         exp.new_step(tuple(step))
                         exp.message = "OK"
-                    exp.dump()
+                    # exp.dump()
                     return True
             except Timeout:
                 print("Another instance of this application currently holds the lock.")

@@ -80,10 +80,10 @@ def shed_evt_job_executed(event):
         exp.status = "ENDED"
         exp.dump()
         return
-    exp.next_run_time = "%s" % job.next_run_time
+    # exp.next_run_time = "%s" % job.next_run_time
     if job.next_run_time < datetime.now(pytz.timezone('Europe/Paris')):
         exp.status = "ENDED"
-    exp.dump()
+        exp.dump()
     return
 scheduler.add_listener(shed_evt_job_executed, EVENT_JOB_EXECUTED)
 
@@ -100,12 +100,13 @@ def shed_evt_job_added(event):
     :rtype: None
     """
 
+    #TODO: add next photo attr
     expid = event.job_id
     exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
     job = scheduler.get_job(expid)
-    exp.next_run_time = "%s" % job.next_run_time
-    exp.status = "RUNNING"
-    exp.dump()
+    # exp.next_run_time = "%s" % job.next_run_time
+    # exp.status = "RUNNING"
+    # exp.dump()
     return
 scheduler.add_listener(shed_evt_job_added, EVENT_JOB_ADDED)
 
@@ -176,7 +177,7 @@ def shed_evt_job_missed(event):
     exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
     exp.message = "Step missed. Error : %s" % event.exception
     #TODO : ajouter des steps vides
-    exp.dump()
+    # exp.dump()
     return
 scheduler.add_listener(shed_evt_job_missed, EVENT_JOB_MISSED)
 
