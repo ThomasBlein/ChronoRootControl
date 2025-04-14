@@ -145,7 +145,7 @@ class RaspiCamera(Camera):
                 if trays < Config.CAM_RETRIES:
                     time.sleep(Config.CAM_WAIT_AFTER_RETRAY)
                 else:
-                    self.logger.error("Error: Unable to acquire camera. Abandoned after %d seconds" % retries * Config.CAM_WAIT_AFTER_RETRAY)
+                    print("Error: Unable to acquire camera. Abandoned after %d seconds" % retries * Config.CAM_WAIT_AFTER_RETRAY)
                     #TODO: log instead pf print
         return False
 

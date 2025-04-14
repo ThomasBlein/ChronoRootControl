@@ -125,7 +125,7 @@ def shed_evt_job_removed(event):
     :rtype: None
     """
 
-    log.info("job removed %s" % event)
+    print("job removed %s" % event)
     return
 scheduler.add_listener(shed_evt_job_removed, EVENT_JOB_REMOVED)
 
@@ -142,7 +142,7 @@ def shed_evt_job_modified(event):
     :rtype: None
     """
 
-    log.info("job modified %s" % event)
+    print("job modified %s" % event)
     return
 scheduler.add_listener(shed_evt_job_modified, EVENT_JOB_MODIFIED)
 
@@ -262,8 +262,7 @@ class ChiefOperator(object):
             {'CREATE': self.create_and_schedule,
             'CANCEL' :self.sched_cancel_xp}[action](xpid)
         except KeyError:
-            self.logger.error("Unemplemented action - %s" % action)
-
+            print("Unemplemented action")
         return
 
     def create_and_schedule(self, xpid):
