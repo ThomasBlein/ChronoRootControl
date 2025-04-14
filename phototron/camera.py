@@ -130,10 +130,13 @@ class RaspiCamera(Camera):
                         resolution = Config.CAM_PARAMS['resolution']
 
                     camera.resolution = resolution
-                    # Set exposure mode to backlight
-                    camera.exposure_mode = "backlight"
-                    # Set camera to gray levels
-                    camera.color_effects = (128,128)
+                    if 'InfraRed' in params.keys() and params['InfraRed']:
+                        # Set exposure mode to backlight
+                        camera.exposure_mode = "backlight"
+                        # Set camera to gray levels
+                        camera.color_effects = (128,128)
+                    else:
+                        camera.exposure_mode = "auto"
                     # Wait for autobalance
                     camera.start_preview()
                     time.sleep(Config.CAM_ADJUST_TIME)
