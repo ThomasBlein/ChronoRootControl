@@ -5,6 +5,6 @@ server {
 
     location / {
         include uwsgi_params;
-        uwsgi_pass unix:/run/uwsgi/app/ChronoRootrobot/socket;
+        uwsgi_pass unix:/run/uwsgi/app/ChronoRootControl/socket;
     }
 }
