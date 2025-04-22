@@ -9,7 +9,7 @@ Prepare PiOS on a SD card
 
 Use `rpi-imager` to install and configure a Raspberry Pi OS compatible for ChronoRoot.
 
-You will found instructions on installing `rpi-imager` on your computer on the `Raspberry Pi OS`<https://www.raspberrypi.com/software/> web page.
+You will found instructions on installing `rpi-imager` on your computer on the `Raspberry Pi OS<https://www.raspberrypi.com/software/>`_ web page.
 
 Execute rpi-imager and on the first screen:
 
