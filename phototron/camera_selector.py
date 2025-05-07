@@ -166,8 +166,8 @@ class IVPort_v2(Selector):
             subprocess
         except NameError:
             import subprocess
-        goodanswer = b'     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f\n00:          -- -- -- -- -- -- -- -- -- -- -- -- -- \n10: 10 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- \n20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- \n30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- \n40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- \n50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- \n60: -- -- -- -- 64 -- -- -- -- -- -- -- -- -- -- -- \n70: 70 -- -- -- -- -- -- --                         \n'
-        result = subprocess.run(['i2cdetect', '-y', '1'], stdout=subprocess.PIPE)
+        goodanswer = b'0x00\n'
+        result = subprocess.run(['i2cget', '-y', '1', '0x10'], stdout=subprocess.PIPE)
         return goodanswer == result.stdout
 
     class Factory:
