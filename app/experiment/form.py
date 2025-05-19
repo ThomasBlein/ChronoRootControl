@@ -31,7 +31,7 @@ class SettingsForm(Form):
                         display_format='%Y-%m-%d %H:%M:%S %z',
                         default=datetime.datetime.now)
     interval = IntegerField("interval",
-                            default=360,
+                            default=15,
                             description= 'Interval (in minutes)')
     ir = BooleanField("ir",
                       default=True,

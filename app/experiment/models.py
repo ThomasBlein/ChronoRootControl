@@ -30,7 +30,7 @@ class Experiment(object):
     modification = ""
     _start = arrow.now().format('YYYY-MM-DD HH:mm:ssZ')
     _end = arrow.now().format('YYYY-MM-DD HH:mm:ssZ')
-    interval = 360 # in minutes
+    interval = 15 # in minutes
     steps_nb = 0
     cameras = []
     ir = False
