@@ -63,8 +63,9 @@ class LinuxCamera(Camera):
         def create(self):
             return LinuxCamera()
 
-
+import io
 from picamera import PiCamera, PiCameraMMALError
+from PIL import Image
 class RaspiCamera(Camera):
     """Deals with RapberryPi camera module
     """
@@ -123,25 +124,37 @@ class RaspiCamera(Camera):
             try:
                 with PiCamera() as camera:
                     time.sleep(Config.CAM_WARMUP)
+                    
                     # TODO: generaliser
-                    if 'resolution' in params.keys():
-                        resolution = params['resolution']
-                    else:
-                        resolution = Config.CAM_PARAMS['resolution']
+                    camera.resolution = params['resolution']
+                    camera.exposure_mode = params["exposure_mode"]
 
-                    camera.resolution = resolution
-                    if 'InfraRed' in params.keys() and params['InfraRed']:
-                        # Set exposure mode to backlight
-                        camera.exposure_mode = "backlight"
-                        # Set camera to gray levels
-                        camera.color_effects = (128,128)
-                    else:
-                        camera.exposure_mode = "auto"
                     # Wait for autobalance
                     camera.start_preview()
                     time.sleep(Config.CAM_ADJUST_TIME)
 
-                    camera.capture(image_path, 'png')
+                    if params['exposure_mode'] == "backlight":
+                        self.logger.debug("backlight settings")
+                        #
+                        # Create a byte stream to hold image data
+                        stream = io.BytesIO()
+                        # Capture the image in RGB format
+                        camera.capture(stream, format='png')
+
+                        # Convert PNG image to a Pillow image
+                        stream.seek(0)
+                        image = Image.open(stream)
+
+                        # convert to grayscale
+                        gray_image = image.convert('L')
+
+                        # save the grayscale image as png
+                        gray_image.save(image_path)
+
+                    else:
+                        self.logger.debug("default color settings")
+                        # save the color image as png
+                        camera.capture(image_path, 'png')
                 return True
             except PiCameraMMALError:
                 #retry

@@ -80,8 +80,12 @@ Update the system and install required packages
     sudo apt upgrade -y
     sudo apt install -y \
         git i2c-tools libffi-dev \
-        python3 python3-pip python3-rpi.gpio python3-venv\
-        nginx-full uwsgi uwsgi-plugin-python3
+        python3 python3-pip python3-rpi.gpio python3-venv \
+        nginx-full uwsgi uwsgi-plugin-python3 \
+        libtiff-dev libjpeg-dev libopenjp2-7-dev zlib1g-dev \
+        libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev \
+        tk8.6-dev python3-tk libharfbuzz-dev libfribidi-dev \
+        libxcb1-dev
 
 
 Install ChronoRootControler application

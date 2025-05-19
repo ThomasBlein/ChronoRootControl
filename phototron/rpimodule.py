@@ -111,6 +111,7 @@ class RpiModule(object):
                     if exp.ir:
                         rpi.logger.info('turning lights ON')
                         light.state = Light.ON
+                        params["exposure_mode"] = "backlight"
                     else:
                         rpi.logger.info('turning lights OFF')
                         light.state = Light.OFF
@@ -124,7 +125,7 @@ class RpiModule(object):
                             instant_date = arrow.now().format('YYYY-MM-DD_HH-mm-ss')
                             #create cam folder & add cam_folder path to imagepath
                             camdir = os.path.join(exp.workdir, "%s"%camera)
-                            rpi.logger.debug('# # # # # # new path %s'%camdir)
+                            rpi.logger.debug('Image directory path %s'%camdir)
                             if not os.path.isdir(camdir):
                                 os.mkdir(camdir)
 
