@@ -166,9 +166,8 @@ class IVPort_v2(Selector):
             subprocess
         except NameError:
             import subprocess
-        goodanswer = b'0x00\n'
-        result = subprocess.run(['i2cget', '-y', '1', '0x10'], stdout=subprocess.PIPE)
-        return goodanswer == result.stdout
+        result = subprocess.run("tools/multiplexer_detected")
+        return result.returncode == 0
 
     class Factory:
         def create(self):
