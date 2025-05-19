@@ -134,3 +134,16 @@ Setup and restart `nginx` as web-proxy
     cd /etc/nginx/sites-enabled/
     sudo ln -s ../sites-available/chronorootcontrol.conf .
     sudo systemctl restart nginx
+
+Automatic mounting of USB disk
+==============================
+
+To automaticly mount first USB drive on /media/usb0. Create the `/media/usb0` directory and add an entry to the /etc/fstab file.
+The automounting work at startup of the module:
+
+::
+
+    sudo mkdir /media/usb0
+    sudo chmod a+rw /media/usb0
+    echo '/dev/sda1	/media/usb0	vfat	defaults,auto,users,rw,nofail,noatime	0	0' \
+        | sudo tee -a /etc/fstab
