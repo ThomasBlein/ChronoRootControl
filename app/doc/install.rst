@@ -57,7 +57,7 @@ You can use the interactive interface of `raspi-config` or use the following com
 ::
 
     sudo raspi-config nonint do_legacy 0
-    sudo raspi-config nonint do_i2c 1
+    sudo raspi-config nonint do_i2c 0
     sudo raspi-config nonint do_boot_wait 0
     sudo raspi-config nonint do_memory_split 256
 
