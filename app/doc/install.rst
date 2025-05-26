@@ -87,6 +87,15 @@ Update the system and install required packages
         tk8.6-dev python3-tk libharfbuzz-dev libfribidi-dev \
         libxcb1-dev
 
+Setup the default data dir
+==========================
+
+By default the experiments will be saved in the `/srv/ChronoRootData` folder that need to be created.
+
+::
+
+    sudo mkdir /srv/ChronoRootData
+    sudo chmod a+rw /srv/ChronoRootData
 
 Install ChronoRootControler application
 =======================================
@@ -95,9 +104,7 @@ Create the directory structure for `ChronoRootControl` application
 
 ::
 
-    sudo mkdir /srv/ChronoRootData
     sudo mkdir /srv/ChronoRootControl
-    sudo chmod a+rw /srv/ChronoRootData
     sudo chmod a+rw /srv/ChronoRootControl
 
 Install `ChronoRootControl` application from GitHub and setup the virtual environment
