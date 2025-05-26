@@ -158,7 +158,7 @@ class RaspiCamera(Camera):
                 return True
             except PiCameraMMALError:
                 #retry
-                if trays < Config.CAM_RETRIES:
+                if retries < Config.CAM_RETRIES:
                     time.sleep(Config.CAM_WAIT_AFTER_RETRAY)
                 else:
                     print("Error: Unable to acquire camera. Abandoned after %d seconds" % retries * Config.CAM_WAIT_AFTER_RETRAY)
