@@ -16,7 +16,7 @@ fi
 #######################################
 
 # install the required packages and disable the services
-apt install dnsmasq hostapd
+apt install -y dnsmasq hostapd netfilter-persistent
 systemctl stop dnsmasq
 systemctl disable dnsmasq
 systemctl unmask hostapd
