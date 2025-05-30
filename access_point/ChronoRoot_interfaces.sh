@@ -44,17 +44,20 @@ cp ./conf/chronoroot_wpa_supplicant.conf /etc/ChronoRoot/
 # Deploy the scripts for status change
 cp ./scripts/access_point_mode.sh /etc/ChronoRoot/
 cp ./scripts/satellite_mode.sh /etc/ChronoRoot/
+cp ./scripts/check_mode.py /etc/ChronoRoot/
 # Set the right
 chown -R root:root /etc/ChronoRoot/*
 chmod 644 /etc/ChronoRoot/*
 chmod 600 /etc/ChronoRoot/chronoroot_wpa_supplicant.conf
 chmod +x /etc/ChronoRoot/*.sh
+chmod +x /etc/ChronoRoot/*.py
 
-# Setup jumper status check
-cp ./scripts/check_mode.py /etc/init.d/
-chown root:root /etc/init.d/check_mode.py
-chmod 755 /etc/init.d/check_mode.py
-update-rc.d check_mode.py defaults
+# Setup jumper status check service
+cp ./conf/check_mod.service /etc/systemd/system/
+chown root:root /etc/systemd/system/check_mod.service
+chmod 644 /etc/systemd/system/check_mod.service
+systemctl daemon-reload
+# systemctl enable check_mod.service
 
 # Deploy the fixed IP configuration based on modules_info.csv if present
 if [ -f /etc/ChronoRoot/modules_info.csv ]; then
