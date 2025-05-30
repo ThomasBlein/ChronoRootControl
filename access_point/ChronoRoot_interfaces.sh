@@ -23,9 +23,9 @@ systemctl unmask hostapd
 systemctl disable hostapd
 
 # DHCP configuration through dnsmasq
-cp ./conf/dnsmasq.conf /etc/dnsmaq.d/10_dhcp_configuration.conf
-chown root:root /etc/dnsmaq.d/10_dhcp_configuration.conf
-chmod 644 /etc/dnsmaq.d/10_dhcp_configuration.conf
+cp ./conf/dnsmasq.conf /etc/dnsmasq.d/10_dhcp_configuration.conf
+chown root:root /etc/dnsmasq.d/10_dhcp_configuration.conf
+chmod 644 /etc/dnsmasq.d/10_dhcp_configuration.conf
 
 # Wifi configuration through hostapd
 cp ./conf/hostapd.conf /etc/hostapd/hostapd.conf
@@ -33,7 +33,7 @@ chown root:root /etc/hostapd/hostapd.conf
 chmod 644 /etc/hostapd/hostapd.conf
 
 # Enable packet forwarding for IPV4 in the kernel and firewall
-cp ./conf/ipv4.ip_forward.conf /etc/sysctls.d/50_ipv4.ip_forward.conf
+cp ./conf/ipv4.ip_forward.conf /etc/sysctl.d/50_ipv4.ip_forward.conf
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 netfilter-persistent save
 
