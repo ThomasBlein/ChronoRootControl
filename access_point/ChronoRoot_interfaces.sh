@@ -49,7 +49,6 @@ chown -R root:root /etc/ChronoRoot/*
 chmod 644 /etc/ChronoRoot/*
 chmod 600 /etc/ChronoRoot/chronoroot_wpa_supplicant.conf
 chmod +x /etc/ChronoRoot/*.sh
-chmod +x /etc/ChronoRoot/*.py
 
 # Setup jumper status check
 cp ./scripts/check_mode.py /etc/init.d/
