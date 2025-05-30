@@ -53,7 +53,7 @@ chmod +x /etc/ChronoRoot/*.sh
 # Setup jumper status check
 cp ./scripts/check_mode.py /etc/init.d/
 chown root:root /etc/init.d/check_mode.py
-chmod 644 /etc/init.d/check_mode.py
+chmod 755 /etc/init.d/check_mode.py
 update-rc.d check_mode.py defaults
 
 # Deploy the fixed IP configuration based on modules_info.csv if present
