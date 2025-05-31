@@ -87,7 +87,7 @@ sudo mkdir /srv/ChronoRootData
 sudo chmod a+rw /srv/ChronoRootData
 ```
 
-## Install ChronoRootControler application
+## Install ChronoRootControl application
 
 Create the directory structure for `ChronoRootControl` application
 

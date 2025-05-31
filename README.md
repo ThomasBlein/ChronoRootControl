@@ -8,9 +8,9 @@ Nicolás Gaggion¹, Federico Ariel², Vladimir Daric³, Éric Lambert³, Simon L
 
 ![Test Image 1](images/workflow_resunetds.png)
 
-# ChronoRoot Module Controler
+# ChronoRootControl
 
-A web interface to control the the ChronoRoot module designed
+A web interface to control the ChronoRoot module designed
 for image-based plant phenotyping.
 
 ## ChronoRoot module description
@@ -40,7 +40,7 @@ directly on an external drive plugged on the Raspberry Pi. Once the experimental
 setup is ready, each module is completely independent from the external
 environment and the access to the network.
 
-## ChronoRoot module controler documentation
+## ChronoRootControl documentation
 
   * [About](app/doc/about.md)
   * [ChronoRoot App installation](app/doc/install.md)

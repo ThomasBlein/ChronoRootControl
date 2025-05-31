@@ -1,4 +1,4 @@
-# About ChronoRoot Module Controler
+# About ChronoRootControl
 ## A web interface to control a module of the ChronoRoot robot
 
 **Copyright:** 2016-2020 IPS2  
