@@ -52,8 +52,20 @@
           {% endfor %}
         </ul>
     </div>
-    <div class="w-100"></div>
     <div class="col">
+        <h2>Scheduler</h2>
+        <dl class="row">
+            <dt class="col-3">Status:</dt>
+            <dd class="col-9">{{ scheduler_info.status }}</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-3">Running jobs:</dt>
+            <dd class="col-9">{{ scheduler_info.running_jobs|length }}</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-3">Updated date:</dt>
+            <dd class="col-9">{{ scheduler_info.last_update }}</dd>
+        </dl>
     </div>
     <div class="col">
         {% include 'components/backlight.html' %}

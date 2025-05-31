@@ -12,6 +12,7 @@ from io import BytesIO
 from config import Config
 
 from phototron.rpimodule import RpiModule
+from app.options.schedulerstatus import SchedulerStatus
 
 
 from flask import (Blueprint, abort, flash, redirect, render_template, request,
@@ -30,6 +31,7 @@ def conf():
     now = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
     rpi = RpiModule()
     light = rpi.light
+    scheduler_info = SchedulerStatus().get_info()
 
     app_setting_form = AppSettingsForm(prefix="app_setting")
     backlight_form = BackLightForm(ir=light.state, prefix="backlight")
@@ -51,7 +53,7 @@ def conf():
     return render_template('config.html', date=now,
             app_setting_form=app_setting_form,
             backlight_form=backlight_form,
-            light_state=light.state, config=Config)
+            light_state=light.state, config=Config, scheduler_info=scheduler_info)
 
 def setSystemTime(mydate, network=True):
     """ Set System system time

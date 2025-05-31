@@ -103,3 +103,13 @@ class SchedulerStatus(object):
         del self.jobs_info[expid]
         self.refresh_scheduler_status()
 
+
+    def get_info(self):
+        self.jobs_info
+
+        scheduler_info = {
+            "status": "running" if self.status["running"] else "stopped",
+            "last_update": self.status["last_update"],
+            "running_jobs": [exp_id for exp_id,job_info in self.jobs_info.items() if job_info["status"] == "RUNNING"]
+        }
+        return scheduler_info
