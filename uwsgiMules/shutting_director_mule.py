@@ -121,14 +121,13 @@ def shed_evt_job_added(event):
     :rtype: None
     """
 
-    #TODO: add next photo attr
     expid = event.job_id
     exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
-    job = scheduler.get_job(expid)
     if exp.status != "RUNNING":
         exp.status = "RUNNING"
+        exp.message = "Added to the scheduler at %s" % datetime.now().isoformat()
         exp.dump()
-    scheduler_status.set_exp_status(expid, "RUNNING")
+    scheduler_status.refresh_scheduler_status()
     return
 scheduler.add_listener(shed_evt_job_added, EVENT_JOB_ADDED)
 
@@ -310,7 +309,7 @@ class ChiefOperator(object):
         self.logger.info("create_and_schedule")
         exp = Experiment(directory=os.path.join(Config.WORKING_DIR, xpid))
         exp_id = xpid
-        exp.status = "SCHEDULED"
+        exp.status = "RUNNING"
         exp.message = "Added to the scheduler at %s" % datetime.now().isoformat()
 
         ##scheduler accepts loosely converted strings

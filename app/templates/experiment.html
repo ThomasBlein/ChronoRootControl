@@ -19,7 +19,7 @@
 <div class="alert alert-warning" role="alert">
 {% elif exp.status == "ERROR" %}
 <div class="alert alert-danger" role="alert">
-{% elif exp.status in("RUNNING", "SCHEDULED" )%}
+{% elif exp.status == "RUNNING" %}
 <div class="alert alert-info" role="alert">
 {% else %}
 <div class="alert" role="alert">

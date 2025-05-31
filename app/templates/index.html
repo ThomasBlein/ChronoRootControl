@@ -32,7 +32,7 @@
                   <tr class="warning clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
                   {% elif exp.status == "ERROR" %}
                   <tr class="danger clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
-                  {% elif exp.status in("RUNNING", "SCHEDULED") %}
+                  {% elif exp.status == "RUNNING" %}
                   <tr class="info clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
                   {% else %}
                   <tr class="clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
