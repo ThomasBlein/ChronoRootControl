@@ -39,6 +39,7 @@ def md_filter(md_content):
 
 @help_page.route('/', methods=['GET'])
 @help_page.route('/<page>', methods=['GET'])
+@help_page.route('/<page>.md', methods=['GET'])
 def help(page=None):
     """
     Display a specific help page
