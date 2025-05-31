@@ -29,7 +29,7 @@ def md_filter(md_content):
         else:
             md_body = md_body + '\n' + line
 
-    body_html = markdown.markdown(md_body, extensions=['attr_list', 'fenced_code'])
+    body_html = markdown.markdown(md_body, extensions=['attr_list', 'fenced_code', 'nl2br'])
 
     return {
         'body': body_html,
