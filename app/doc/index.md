@@ -20,6 +20,7 @@ Each module is able to control 4 cameras
 
 Table of contents :
 
-  * [About](./about)
-  * [ChronoRoot App installation](./install)
-  * [App architecture](./dev_doc)
+  * [About](./about.md)
+  * [ChronoRootControl installation](./install.md)
+  * [ChronoRootControl configuration](./configuration.md)
+  * [App architecture](./dev_doc.md)

@@ -141,3 +141,7 @@ sudo chmod a+rw /media/usb0
 echo '/dev/sda1	/media/usb0	vfat	defaults,auto,users,rw,nofail,noatime	0	0' \
     | sudo tee -a /etc/fstab
 ```
+
+## Configuration
+
+Refer to the [ChronoRootControl configuration](./configuration.md) page.
