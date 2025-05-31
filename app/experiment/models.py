@@ -157,7 +157,6 @@ class Experiment(object):
                 "cameras":  self.cameras,
                 "ir": self.ir,
                 "steps": self.steps,
-                "next_run_time": self.next_run_time,
                 "workdir": self.workdir,
                 "img_params": self.params,
                 })

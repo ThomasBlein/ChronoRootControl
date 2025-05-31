@@ -5,6 +5,7 @@ import os
 
 from app.experiment.form import SettingsForm
 from app.experiment.models import Experiment
+from app.options.schedulerstatus import SchedulerStatus
 from .models import Experiment
 from config import Config
 from flask import (Blueprint, abort, flash, redirect, render_template, request,
@@ -14,6 +15,8 @@ from wtforms import SelectMultipleField, TextAreaField
 experiment_page = Blueprint('experiment_page', __name__,
                             template_folder='templates',
                             static_folder='static')
+
+schedulerstatus = SchedulerStatus()
 
 
 @experiment_page.route('/', methods=['GET', 'POST'])
@@ -62,6 +65,8 @@ def setuped_experiment(expid):
         exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
     except FileNotFoundError:
         abort(404)
+    if expid in schedulerstatus.jobs_info:
+        exp.next_run_time = schedulerstatus.jobs_info[expid]["next_run_time"]
     form = SettingsForm(obj=exp)
     if request.method == 'POST':
         if request.form['action'] == "edit":

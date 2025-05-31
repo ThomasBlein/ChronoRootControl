@@ -325,9 +325,7 @@ class ChiefOperator(object):
                         minutes=exp.interval,
                         id=exp.expid,
                         replace_existing=True)
-        exp.next_run_time = "%s" % job.next_run_time
-        self.logger.info("Exp %s scheduled for %s"%(exp.expid, exp.next_run_time))
-        scheduler.print_jobs()
+        self.logger.info("Exp %s scheduled for %s"%(exp.expid, job.next_run_time))
         exp.dump()
         scheduler_status.refresh_scheduler_status()
 
