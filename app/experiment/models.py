@@ -22,6 +22,7 @@ class Experiment(object):
     Handle the information of one experiment
     """
     app = current_app
+    schedulerstatus = None
     expid = ""
     desc = ""
     status = "CREATION"
@@ -93,6 +94,8 @@ class Experiment(object):
             list of steps. Each step is a tuple containing
             date of image capture, the image file path and the camera id
         """
+        from app.options.schedulerstatus import SchedulerStatus
+        self.schedulerstatus = SchedulerStatus()
         if directory is not None:
             self.workdir = directory
             self.load()
@@ -101,6 +104,10 @@ class Experiment(object):
 
         if self.expid == "" : self.expid = self.new_xp_id()
 
+        if self.expid in self.schedulerstatus.jobs_info:
+            self.next_run_time = self.schedulerstatus.jobs_info[self.expid]["next_run_time"]
+        else:
+            self.next_run_time = "Not in the scheduler"
 
         if self.workdir == '':
             self.workdir = os.path.join(Config.WORKING_DIR, self.expid)
