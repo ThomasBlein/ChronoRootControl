@@ -98,6 +98,12 @@ def shed_evt_job_executed(event):
         exp.status = "ENDED"
         scheduler_status.set_exp_status(expid, "ENDED")
         exp.dump()
+    if exp.status != "RUNNING":
+        exp.status = "RUNNING"
+        exp.dump()
+    if exp.message != "":
+        exp.status = ""
+        exp.dump()
     scheduler_status.refresh_scheduler_status()
     return
 scheduler.add_listener(shed_evt_job_executed, EVENT_JOB_EXECUTED)
@@ -177,9 +183,11 @@ def shed_evt_job_error(event):
 
     expid = event.job_id
     exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
-    exp.status = "ERROR"
-    exp.message = "Job execution failed. Error : %s" % event.exception
-    exp.dump()
+    message = "Job execution failed. Error : %s" % event.exception
+    if exp.message != message:
+        exp.message = message
+        exp.status = "ERROR"
+        exp.dump()
     scheduler_status.set_exp_status(expid, "ERROR")
     return
 scheduler.add_listener(shed_evt_job_error, EVENT_JOB_ERROR)
@@ -197,10 +205,12 @@ def shed_evt_job_missed(event):
 
     expid = event.job_id
     exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
-    exp.message = "Step missed. Error : %s" % event.exception
-    #TODO : ajouter des steps vides
-    # exp.dump()
-    scheduler_status.set_exp_status(expid, "MISSED")
+    message = "Step missed. Error : %s" % event.exception
+    if exp.message != message:
+        exp.message = message
+        exp.status = "ERROR"
+        exp.dump()
+    scheduler_status.set_exp_status(expid, "ERROR")
     return
 scheduler.add_listener(shed_evt_job_missed, EVENT_JOB_MISSED)
 
