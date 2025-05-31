@@ -340,7 +340,7 @@ class ChiefOperator(object):
         """
 
         exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
-        self.logger.info("Canceling Exp %s" % xpid )
+        self.logger.info("Canceling Exp %s" % expid )
         exp.status = "CANCEL"
         exp.message = "Canceled & removed from scheduler."
         scheduler.remove_job('%s'%(expid))
