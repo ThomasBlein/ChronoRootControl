@@ -13,28 +13,20 @@
     {% endif %}
 </div>
 
-{% if exp.status == "Done" %}
+{% if exp.status == "ENDED" %}
 <div class="alert alert-success" role="alert">
-    <strong>{{exp.status}}!</strong> {{exp.message}}
-</div>
-{% elif exp.status == "Canceled" %}
+{% elif exp.status == "CANCEL" %}
 <div class="alert alert-warning" role="alert">
-    <strong>{{exp.status}}!</strong> {{exp.message}}
-</div>
-{% elif exp.status == "Error" %}
+{% elif exp.status == "ERROR" %}
 <div class="alert alert-danger" role="alert">
-    <strong>{{exp.status}}!</strong> {{exp.message}}
-</div>
-{% elif exp.status == "Running" %}
+{% elif exp.status in("RUNNING", "SCHEDULED" )%}
 <div class="alert alert-info" role="alert">
-    <strong>{{exp.status}}!</strong> {{exp.message}}
-</div>
+{% else %}
+<div class="alert" role="alert">
 {% endif %}
-
-
-<div class="alert alert-success" role="alert">
     <h3>Summary</h3>
-    Current status :    <strong>{{exp.status}}</strong> {{exp.message}}<br/>
+    Current status :    <strong>{{exp.status}}</strong><br/>
+    {{exp.message}}<br/>
     Next image will be taken at  {{ exp.next_run_time }} <br/>
 </div>
 
@@ -199,11 +191,11 @@
 </thead>
 <tbody>
     {% for logentry in exp.logs %}
-    {% if logentry.status == "Done" %}
+    {% if logentry.status == "ENDED" %}
         <tr class="success">
-    {% elif logentry.status == "Canceled" %}
+    {% elif logentry.status == "CANCEL" %}
         <tr class="warning">
-    {% elif logentry.status == "Error" %}
+    {% elif logentry.status == "ERROR" %}
     <tr class="danger">
     {% else %}
     <tr>

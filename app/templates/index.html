@@ -26,13 +26,13 @@
               </thead>
               <tbody>
                   {% for exp in exps.exps %}
-                  {% if exp.status == "Done" %}
+                  {% if exp.status == "ENDED" %}
                   <tr class="success clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
-                  {% elif exp.status == "Canceled" %}
+                  {% elif exp.status == "CANCEL" %}
                   <tr class="warning clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
-                  {% elif exp.status == "Error" %}
+                  {% elif exp.status == "ERROR" %}
                   <tr class="danger clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
-                  {% elif exp.status == "Running" %}
+                  {% elif exp.status in("RUNNING", "SCHEDULED") %}
                   <tr class="info clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
                   {% else %}
                   <tr class="clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">

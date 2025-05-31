@@ -300,7 +300,8 @@ class ChiefOperator(object):
         self.logger.info("create_and_schedule")
         exp = Experiment(directory=os.path.join(Config.WORKING_DIR, xpid))
         exp_id = xpid
-        exp.status = "SCHEDULING_IN_PROGRESS"
+        exp.status = "SCHEDULED"
+        exp.message = "Added to the scheduler at %s" % datetime.now().isoformat()
 
         ##scheduler accepts loosely converted strings
         start = arrow.get(exp.start).format('YYYY-MM-DD HH:mm:ss').replace('+0000', '')
@@ -331,9 +332,8 @@ class ChiefOperator(object):
 
         exp = Experiment(directory=os.path.join(Config.WORKING_DIR, xpid))
         self.logger.info("Canceling Exp %s" % xpid )
-        exp.status = "Canceled"
+        exp.status = "CANCEL"
         exp.message = "Canceled & removed from scheduler."
-        exp.next_run_time = "Never"
         scheduler.remove_job('%s'%(exp.expid))
         exp.dump()
         scheduler_status.refresh_scheduler_status()

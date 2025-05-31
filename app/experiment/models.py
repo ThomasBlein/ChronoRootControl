@@ -24,7 +24,7 @@ class Experiment(object):
     app = current_app
     expid = ""
     desc = ""
-    status = "Embrio"
+    status = "CREATION"
     message = ""
     creation = arrow.now().format('YYYY-MM-DD HH:mm:ssZ')
     modification = ""
