@@ -27,13 +27,13 @@
               <tbody>
                   {% for exp in exps.exps %}
                   {% if exp.status == "ENDED" %}
-                  <tr class="success clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  <tr class="table-success clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
                   {% elif exp.status == "CANCEL" %}
-                  <tr class="warning clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  <tr class="table-warning clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
                   {% elif exp.status == "ERROR" %}
-                  <tr class="danger clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  <tr class="table-danger clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
                   {% elif exp.status == "RUNNING" %}
-                  <tr class="info clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
+                  <tr class="table-info clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
                   {% else %}
                   <tr class="clickable-row" data-href="{{url_for('experiment_page.setuped_experiment', expid=exp.expid) }}">
                   {% endif %}
