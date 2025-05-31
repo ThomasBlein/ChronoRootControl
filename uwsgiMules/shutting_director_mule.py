@@ -68,6 +68,11 @@ else:
     scheduler_status.refresh_scheduler_status()
     pass
 
+def end_experiment(exp):
+    scheduler_status.remove_experiment(exp.expid)
+    exp.status = "ENDED"
+    exp.dump()
+
 #####
 ## Callback functions
 #      capture scheduler events
@@ -89,14 +94,11 @@ def shed_evt_job_executed(event):
     exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
     job = scheduler.get_job(expid)
     if job is None:
-        exp.status = "ENDED"
-        scheduler_status.set_exp_status(expid, "ENDED")
-        exp.dump()
+        end_experiment(exp)
         return
     if job.next_run_time < datetime.now(tzlocal.get_localzone()):
-        exp.status = "ENDED"
-        scheduler_status.set_exp_status(expid, "ENDED")
-        exp.dump()
+        end_experiment(exp)
+        return
     if exp.status != "RUNNING":
         exp.status = "RUNNING"
         exp.dump()
@@ -147,8 +149,7 @@ def shed_evt_job_removed(event):
 
     expid = event.job_id
     print("Job removed %s" % expid)
-    del scheduler_status.jobs_info[expid]
-    scheduler_status.refresh_scheduler_status()
+    schedulerstatus.remove_experiment(expid)
     return
 scheduler.add_listener(shed_evt_job_removed, EVENT_JOB_REMOVED)
 
@@ -296,7 +297,7 @@ class ChiefOperator(object):
             print("Unemplemented action")
         return
 
-    def create_and_schedule(self, xpid):
+    def create_and_schedule(self, exp_id):
         """handle experiment creation and schedule
 
         :param: expid
@@ -306,14 +307,16 @@ class ChiefOperator(object):
         """
 
         self.logger.info("create_and_schedule")
-        exp = Experiment(directory=os.path.join(Config.WORKING_DIR, xpid))
-        exp_id = xpid
+        exp = Experiment(directory=os.path.join(Config.WORKING_DIR, exp_id))
+        end = arrow.get(exp.end).format('YYYY-MM-DD HH:mm:ss')
+        if datetime.fromisoformat(end).replace(tzinfo=None) < datetime.now():
+            end_experiment(exp)
+            return
         exp.status = "RUNNING"
         exp.message = "Added to the scheduler at %s" % datetime.now().isoformat()
 
         ##scheduler accepts loosely converted strings
         start = arrow.get(exp.start).format('YYYY-MM-DD HH:mm:ss').replace('+0000', '')
-        end = arrow.get(exp.end).format('YYYY-MM-DD HH:mm:ss').replace('+0000', '')
 
         job = scheduler.add_job(RpiModule.take_picture, ## PICTURE IT !
                         args=(exp_id,),
@@ -327,7 +330,7 @@ class ChiefOperator(object):
         exp.dump()
         scheduler_status.refresh_scheduler_status()
 
-    def sched_cancel_xp(self, xpid):
+    def sched_cancel_xp(self, expid):
         """handle experiment cancelation
 
         :param: expid
@@ -336,13 +339,13 @@ class ChiefOperator(object):
         :rtype: None
         """
 
-        exp = Experiment(directory=os.path.join(Config.WORKING_DIR, xpid))
+        exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
         self.logger.info("Canceling Exp %s" % xpid )
         exp.status = "CANCEL"
         exp.message = "Canceled & removed from scheduler."
-        scheduler.remove_job('%s'%(exp.expid))
+        scheduler.remove_job('%s'%(expid))
         exp.dump()
-        scheduler_status.refresh_scheduler_status()
+        scheduler_status.remove_experiment(expid)
 
 if __name__ == '__main__':
     try:

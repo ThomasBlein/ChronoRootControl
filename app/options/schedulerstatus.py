@@ -98,3 +98,8 @@ class SchedulerStatus(object):
         self.update_from_scheduler()
         # Write the updated status to the file
         self.write()
+
+    def remove_experiment(self, expid):
+        del self.jobs_info[expid]
+        self.refresh_scheduler_status()
+
