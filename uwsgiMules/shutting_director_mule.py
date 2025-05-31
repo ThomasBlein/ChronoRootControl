@@ -102,9 +102,6 @@ def shed_evt_job_executed(event):
     if exp.status != "RUNNING":
         exp.status = "RUNNING"
         exp.dump()
-    if exp.message != "":
-        exp.status = ""
-        exp.dump()
     scheduler_status.refresh_scheduler_status()
     return
 scheduler.add_listener(shed_evt_job_executed, EVENT_JOB_EXECUTED)
