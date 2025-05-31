@@ -271,7 +271,7 @@ class ChiefOperator(object):
                 message = json.loads(uwsgi.mule_get_msg())
                 expid = message['id']
                 action = message['action']
-                self.logger.info("Got massage: %s, %s"% (expid, action))
+                self.logger.info("Got message: %s, %s"% (expid, action))
             except:
                 raise
             if message is not None:
