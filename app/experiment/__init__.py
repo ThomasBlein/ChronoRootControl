@@ -67,6 +67,8 @@ def setuped_experiment(expid):
         abort(404)
     if expid in schedulerstatus.jobs_info:
         exp.next_run_time = schedulerstatus.jobs_info[expid]["next_run_time"]
+    else:
+        exp.next_run_time = ""
     form = SettingsForm(obj=exp)
     if request.method == 'POST':
         if request.form['action'] == "edit":

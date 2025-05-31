@@ -28,6 +28,8 @@ def experiment_status():
     for exp in exps.exps:
         if exp.expid in schedulerstatus.jobs_info:
             exp.next_run_time = schedulerstatus.jobs_info[exp.expid]["next_run_time"]
+        else:
+            exp.next_run_time = ""
     devicetime = '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
     try:
         return render_template('index.html', exps=exps, now=devicetime,
