@@ -17,10 +17,10 @@
                   <tr>
                       <th>Experiment id</th>
                       <th>Status</th>
-                      <th>Message</th>
                       <th>Start date</th>
                       <th>Stop date</th>
                       <th>Interval</th>
+                      <th>Next image</th>
                       <th></th>
                   </tr>
               </thead>
@@ -39,10 +39,10 @@
                   {% endif %}
                       <th scope="row">{{exp.expid}}</th>
                       <td>{{exp.status}}</td>
-                      <td>{{exp.massage}}</td>
                       <td>{{exp.start.format('YYYY/MM/DD HH:mm')}}</td>
                       <td>{{exp.end.format('YYYY/MM/DD HH:mm')}}</td>
                       <td>{{exp.interval}} min</td>
+                      <td>{{exp.next_run_time}}</td>
                       <td>
                           <a href="{{url_for('api_exp.get_experiment', expid=exp.expid) }}">As json <i class="fas fa-cog"></i></span>
                           </a>
