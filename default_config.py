@@ -12,7 +12,7 @@ class Config(object):
     SECRET_KEY = 'YUYLMOZmyFP1WykCBTlrR7daubECzxnP0HLqsStigqskc9kD6nq2FBpDXKN5H1p8'
 
     SITE_NAME = "ChronoRoot Module Controler"
-    SITE_DESC = "A web interface to control a module of the ChronoRoot robot"
+    SITE_DESC = "A web interface to control a ChronoRoot module"
 
     WORKING_DIR = "/srv/ChronoRootData"
 
