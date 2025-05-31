@@ -24,7 +24,7 @@ from datetime import datetime
 from flask import json
 import arrow
 import logging
-import pytz
+import tzlocal
 from config import Config
 
 
@@ -93,8 +93,7 @@ def shed_evt_job_executed(event):
         scheduler_status.set_exp_status(expid, "ENDED")
         exp.dump()
         return
-    # exp.next_run_time = "%s" % job.next_run_time
-    if job.next_run_time < datetime.now(pytz.timezone('Europe/Paris')):
+    if job.next_run_time < datetime.now(tzlocal.get_localzone()):
         exp.status = "ENDED"
         scheduler_status.set_exp_status(expid, "ENDED")
         exp.dump()
