@@ -25,7 +25,7 @@ class Experiment(object):
     schedulerstatus = None
     expid = ""
     desc = ""
-    status = "CREATION"
+    status = "SETUP"
     message = ""
     creation = arrow.now().format('YYYY-MM-DD HH:mm:ssZ')
     modification = ""
@@ -104,13 +104,17 @@ class Experiment(object):
 
         if self.expid == "" : self.expid = self.new_xp_id()
 
+        if self.workdir == '':
+            self.workdir = os.path.join(Config.WORKING_DIR, self.expid)
+
+        self.status_update()
+
+    def status_update(self):
+        self.schedulerstatus.load()
         if self.expid in self.schedulerstatus.jobs_info:
             self.next_run_time = self.schedulerstatus.jobs_info[self.expid]["next_run_time"]
         else:
             self.next_run_time = "Not in the scheduler"
-
-        if self.workdir == '':
-            self.workdir = os.path.join(Config.WORKING_DIR, self.expid)
 
     def __eq__(self, other):
         """method to comppare two Experiments
@@ -202,9 +206,11 @@ class Experiment(object):
 
     def create(self):
         """
-        Crearte an experiment
+        Create an experiment
         """
-        self.status = "CREATION"
+        if self.status in ("ENDED", "CANCEL"):
+            return
+        self.status = "SETUP"
         self.modification = arrow.now().format('YYYY-MM-DD HH:mm:ssZ')
         self.dump() # passer tous les parametres via le message ?
         message = { 'id' : self.expid,
