@@ -16,6 +16,7 @@ import os
 import uwsgi
 from phototron.rpimodule import RpiModule
 from app.experiment.models import Experiment ### from webapp.models import Experiment
+from app.options.schedulerstatus import SchedulerStatus
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.events import *
@@ -26,6 +27,14 @@ import logging
 import pytz
 from config import Config
 
+
+logging.basicConfig(filename=Config.SHDL_LOG_FILE,
+                    level=Config.LOG_LEVEL,
+                    format=Config.LOG_FORMAT)
+
+log = logging.getLogger(__name__)
+
+
 #scheduler initialisation
 
 try:
@@ -33,11 +42,12 @@ try:
 except NameError:
     scheduler = BackgroundScheduler(executors={'default': ThreadPoolExecutor(1)})
 
-logging.basicConfig(filename=Config.SHDL_LOG_FILE,
-                    level=Config.LOG_LEVEL,
-                    format=Config.LOG_FORMAT)
+# Scheduler status file handling
 
-log = logging.getLogger(__name__)
+try:
+    scheduler_status
+except NameError:
+    scheduler_status = SchedulerStatus(scheduler, log)
 
 handler = logging.FileHandler(Config.SHDL_LOG_FILE, mode='a')
 handler.setFormatter(logging.Formatter(Config.LOG_FORMAT))
@@ -52,8 +62,10 @@ if not scheduler.running:
     log.info('Scheduler is not running')
     scheduler.start()
     log.info('Scheduler started: %s'%scheduler.running)
+    scheduler_status.refresh_scheduler_status()
 else:
     log.info('Scheduler already started')
+    scheduler_status.refresh_scheduler_status()
     pass
 
 #####
@@ -78,12 +90,15 @@ def shed_evt_job_executed(event):
     job = scheduler.get_job(expid)
     if job is None:
         exp.status = "ENDED"
+        scheduler_status.set_exp_status(expid, "ENDED")
         exp.dump()
         return
     # exp.next_run_time = "%s" % job.next_run_time
     if job.next_run_time < datetime.now(pytz.timezone('Europe/Paris')):
         exp.status = "ENDED"
+        scheduler_status.set_exp_status(expid, "ENDED")
         exp.dump()
+    scheduler_status.refresh_scheduler_status()
     return
 scheduler.add_listener(shed_evt_job_executed, EVENT_JOB_EXECUTED)
 
@@ -104,9 +119,10 @@ def shed_evt_job_added(event):
     expid = event.job_id
     exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
     job = scheduler.get_job(expid)
-    # exp.next_run_time = "%s" % job.next_run_time
-    # exp.status = "RUNNING"
-    # exp.dump()
+    if exp.status != "RUNNING":
+        exp.status = "RUNNING"
+        exp.dump()
+    scheduler_status.set_exp_status(expid, "RUNNING")
     return
 scheduler.add_listener(shed_evt_job_added, EVENT_JOB_ADDED)
 
@@ -125,7 +141,10 @@ def shed_evt_job_removed(event):
     :rtype: None
     """
 
-    print("job removed %s" % event)
+    expid = event.job_id
+    print("Job removed %s" % expid)
+    del scheduler_status.jobs_info[expid]
+    scheduler_status.refresh_scheduler_status()
     return
 scheduler.add_listener(shed_evt_job_removed, EVENT_JOB_REMOVED)
 
@@ -142,7 +161,8 @@ def shed_evt_job_modified(event):
     :rtype: None
     """
 
-    print("job modified %s" % event)
+    print("Job modified %s" % event.job_id)
+    scheduler_status.refresh_scheduler_status()
     return
 scheduler.add_listener(shed_evt_job_modified, EVENT_JOB_MODIFIED)
 
@@ -157,8 +177,10 @@ def shed_evt_job_error(event):
 
     expid = event.job_id
     exp = Experiment(directory=os.path.join(Config.WORKING_DIR, expid))
+    exp.status = "ERROR"
     exp.message = "Job execution failed. Error : %s" % event.exception
     exp.dump()
+    scheduler_status.set_exp_status(expid, "ERROR")
     return
 scheduler.add_listener(shed_evt_job_error, EVENT_JOB_ERROR)
 
@@ -178,6 +200,7 @@ def shed_evt_job_missed(event):
     exp.message = "Step missed. Error : %s" % event.exception
     #TODO : ajouter des steps vides
     # exp.dump()
+    scheduler_status.set_exp_status(expid, "MISSED")
     return
 scheduler.add_listener(shed_evt_job_missed, EVENT_JOB_MISSED)
 
@@ -295,6 +318,7 @@ class ChiefOperator(object):
         self.logger.info("Exp %s scheduled for %s"%(exp.expid, exp.next_run_time))
         scheduler.print_jobs()
         exp.dump()
+        scheduler_status.refresh_scheduler_status()
 
     def sched_cancel_xp(self, xpid):
         """handle experiment cancelation
@@ -312,6 +336,7 @@ class ChiefOperator(object):
         exp.next_run_time = "Never"
         scheduler.remove_job('%s'%(exp.expid))
         exp.dump()
+        scheduler_status.refresh_scheduler_status()
 
 if __name__ == '__main__':
     try:
