@@ -1,0 +1,72 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## 1.5.1 - 2025-06-01
+
+### Added
+
+- Configuration documentation.
+
+### Changed
+
+- Update documentation.
+- Convert documentation to Markdown format.
+- Rename all occurrence of the app to ChronoRootControl.
+
+## 1.5.0 - 2025-05-31
+
+### Added
+
+- Scheduler status in the application config pages.
+- User config file to overwrite default info.
+
+### Changed
+
+- Refactor the experiment status in one place.
+
+### Fixed
+
+- Stop an experience if not future picture will be taken.
+- Do not load an ended or canceled experienced in the scheduler.
+- Some miss-spelling and html bugs.
+- Do not display the date of next image if not in scheduler.
+
+### Removed
+
+- Configuration files to run on a laptop.
+
+## 1.4.0 - 2025-05-31
+
+### Added
+
+- Collect the next image time from scheduler.
+- Next image time of experiment list page.
+- Scheduler status set as an exchanged file in /run.
+- Instructions to automatically mount a USB drive.
+
+### Changed
+
+- Homogenize and simplified the experiment status.
+- Clean and correct the requirements.txt file.
+- Modify default experiment path to /srv/ChronoRootData and default interval to 15 min.
+- Do not dump the experiment status file at each picture.
+- Transform print statements to logging.
+- Color picture if no backlight
+- Renaming working folder to ChronoRootControl.
+- Update installation procedure from scratch (Bullseye).
+- Real gray value pictures if in backlight configuration.
+
+### Fixed
+
+- Table line color according to experiment status.
+- Some spelling correction.
+- Use the computer time instead of the fixed one from Paris.
+- Next image time of experiment description page according to scheduler.
+- I2C interface activation.
+- Use of IR and camera warm time configuration.
+- Multiplexer self check for Bullseye.
+
