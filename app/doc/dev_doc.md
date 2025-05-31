@@ -1,15 +1,12 @@
-App architecture
-================
+# App architecture
 
+The app is composed of two components.
 
-Tha app is composed of two components.
-
-1. The web interface which is a Flaskweb app.
+1. The web interface which is a Flask web app.
 2. uwisgi Mule module
 3. Scheduler (BackgroundScheduler from apscheduler module)
 
-uwisgi Mule
------------
+## uwisgi Mule
 
 From uwisgi documentation :
 
@@ -21,11 +18,9 @@ string-based message system.*
 
 The Mule acts as a messenger between the web app and the scheduler.
 
-
 The mule is implemented in uwsgiMules/shutting_director_mule.py file.
 
-Phototron module
-----------------
+## Phototron module
 
 This module implements all Raspberry Pi module features.
 

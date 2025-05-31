@@ -42,9 +42,9 @@ environment and the access to the network.
 
 ## ChronoRoot module controler documentation
 
-  * [About](app/doc/about)
-  * [ChronoRoot App installation](app/doc/install)
-  * [App architecture](app/doc/dev_doc)
+  * [About](app/doc/about.md)
+  * [ChronoRoot App installation](app/doc/install.md)
+  * [App architecture](app/doc/dev_doc.md)
   
 # Image analysis
 

@@ -1,10 +1,9 @@
-Documentation
-=============
+# Documentation
 
-A web interface to control the ChronoRoot robot module.
+A web interface to control a ChronoRoot module.
+{: .lead }
 
-Module description
-------------------
+## Module description
 
 A ChronoRoot module aim to take regular picture of in-vitro plates of growing
 plants. The plate are "classical" scare transparent plates (125mmx125mm) that
@@ -21,6 +20,6 @@ Each module is able to control 4 cameras
 
 Table of contents :
 
-  * `About <./about>`_
-  * `ChronoRoot App installation <./install>`_
-  * `App architecture <./dev_doc>`_
+  * [About](./about)
+  * [ChronoRoot App installation](./install)
+  * [App architecture](./dev_doc)
