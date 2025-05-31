@@ -87,10 +87,10 @@ class SchedulerStatus(object):
 
     # Method to set the status of an experiment
     def set_exp_status(self, expid, status):
-        # Update the status of the experiment in the jobs information
-        self.jobs_info[expid]['status'] = status
         # Update the status from the scheduler
         self.refresh_scheduler_status()
+        # Update the status of the experiment in the jobs information
+        self.jobs_info[expid]['status'] = status
 
     # Method to refresh the scheduler status
     def refresh_scheduler_status(self):
