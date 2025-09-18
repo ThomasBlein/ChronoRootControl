@@ -27,8 +27,13 @@ cp ./conf/dnsmasq.conf /etc/dnsmasq.d/10_dhcp_configuration.conf
 chown root:root /etc/dnsmasq.d/10_dhcp_configuration.conf
 chmod 644 /etc/dnsmasq.d/10_dhcp_configuration.conf
 
-# Wifi configuration through hostapd
-cp ./conf/hostapd.conf /etc/hostapd/hostapd.conf
+# Wifi configuration as server (hostapd)
+# If a personalised conf file exist use it or fallback on the default
+if [ -f ./conf/hostapd.conf ]; then
+  cp ./conf/hostapd.conf /etc/hostapd/hostapd.conf
+else
+  cp ./conf/hostapd.default.conf /etc/hostapd/hostapd.conf
+fi
 chown root:root /etc/hostapd/hostapd.conf
 chmod 644 /etc/hostapd/hostapd.conf
 
@@ -40,7 +45,13 @@ netfilter-persistent save
 # Deploy the different network configuration if access_point or satellite
 cp ./conf/access_point_interface /etc/ChronoRoot/
 cp ./conf/satellite_interface /etc/ChronoRoot/
-cp ./conf/chronoroot_wpa_supplicant.conf /etc/ChronoRoot/
+# Wifi configuration as client (wpa supplicant)
+# If a personalised conf file exist use it or fallback on the default
+if [ -f ./conf/chronoroot_wpa_supplicant.conf ]; then
+  cp ./conf/chronoroot_wpa_supplicant.conf /etc/ChronoRoot/chronoroot_wpa_supplicant.conf
+else
+  cp ./conf/chronoroot_wpa_supplicant.default.conf /etc/ChronoRoot/chronoroot_wpa_supplicant.conf
+fi
 # Deploy the scripts for status change
 cp ./scripts/access_point_mode.sh /etc/ChronoRoot/
 cp ./scripts/satellite_mode.sh /etc/ChronoRoot/
